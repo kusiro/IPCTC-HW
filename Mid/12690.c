@@ -6,5 +6,5 @@ int main(){
   for(int i = 0; i < n; i++){
     scanf("%c", &a[i]);
   }
-  printf("%d\n", n + 1);
+  printf("%d\n", n + 2);
 }
