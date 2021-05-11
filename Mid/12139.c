@@ -11,6 +11,14 @@ int gcd(int m, int n)
   return m;
 }
 
+int gcd_recurcive(int m, int n){
+   if(m % n != 0){
+     gcd_recurcive(n, m%n);
+   } else {
+     return n;
+   }
+}
+
 int main() {
   int n;
   int a[1005];
@@ -21,7 +29,7 @@ int main() {
   int ans = 0;
   for(int i = 1; i < n; i++){
     for(int j = i + 1; j <= n; j++){
-      int current = gcd(a[i], a[j]);
+      int current = gcd_recurcive(a[i], a[j]);
       if(ans < current){
         ans = current;
       }

@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1620739981 source:e:\class\ipctc-hw\hw10\hw10\main.c
+	<stdio.h>
+	"function.h"
+
+1620739984 e:\class\ipctc-hw\hw10\hw10\function.h
+	<stdio.h>
+	<stdlib.h>
+
+1620742259 source:e:\class\ipctc-hw\hw10\hw10\function.c
+	"function.h"
+
