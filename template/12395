@@ -1,0 +1,114 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+char str[101];
+int now = 0;
+int x,y,z;
+
+
+typedef struct Node{
+    int type; //0:operator 1:number 2:variable
+    char c;
+    int val;
+    struct Node* left_child;
+    struct Node* right_child;
+}TreeNode;
+
+TreeNode* create(int val,char c){
+    TreeNode* cur = (TreeNode*)malloc(sizeof(TreeNode));
+    cur->c = c;
+    cur->val = val;
+    cur->left_child = NULL;
+    cur->right_child = NULL;
+    return cur;
+}
+
+void BuildTree(TreeNode** root){
+    if (str[now] == ' ')
+        now++;
+    if(str[now] == '/' || str[now] == '-' || str[now] == '*' || str[now] == '+' ){
+        (*root) = create(-1,str[now]);
+        (*root)->type = 0;
+        now++;
+        BuildTree(&((*root)->left_child));
+        BuildTree(&((*root)->right_child));
+        return;
+    }
+    if(str[now] == 'x'){
+        (*root) = create(x,str[now]);
+        (*root)->type = 2;
+        now++;
+        return;
+    }
+    if(str[now] == 'y'){
+        (*root) = create(y,str[now]);
+        (*root)->type = 2;
+        now++;
+        return;
+    }
+    if(str[now] == 'z'){
+        (*root) = create(z,str[now]);
+        (*root)->type = 2;
+        now++;
+        return;
+    }
+    int i;
+    for(i=1;i<3;i++){
+        if(str[now+i] < 48 || str[now+i] > 57)
+            break;
+    }
+    int num = atoi(str+now);
+    (*root) = create(num,' ');
+    (*root)->type = 1;
+    now += i;
+    return;
+}
+
+
+
+void inorder(TreeNode* root){
+    if(root) {
+        inorder(root->left_child);
+        if(root->type == 0 || root->type == 2)
+            printf("%c", root->c);
+        else
+            printf("%d", root->val);
+        inorder(root->right_child);
+    }
+}
+
+void freeTree(TreeNode* root){
+    if(root){
+        freeTree(root->right_child);
+        freeTree(root->left_child);
+        free(root);
+    }
+}
+
+int count(TreeNode* root){
+    if(root->type == 0){
+        int l = count(root->left_child);
+        int r = count(root->right_child);
+        if(root->c == '+')
+            return l+r;
+        if(root->c == '-')
+            return l-r;
+        if(root->c == '*')
+            return l*r;
+        if(root->c == '/')
+            return l/r;
+    }
+    return root->val;
+}
+
+int main(){
+    fgets(str,101 , stdin);
+    scanf("%d%d%d", &x, &y, &z);
+    TreeNode* root = NULL;
+    BuildTree(&root);
+    inorder(root);
+    printf("\n");
+    int ans = count(root);
+    printf("%d\n", ans);
+    free(root);
+}

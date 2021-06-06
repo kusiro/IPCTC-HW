@@ -1,0 +1,44 @@
+#include <stdio.h>
+int main(){
+    int n,a,b,c,sum,i;
+    int T;
+    scanf("%d",&T);
+    while(T--){
+        sum = 0;
+        scanf("%d%d%d%d",&n, &a, &b, &c);
+        for (i=1;i<=n;i++){
+            int flag1 = 0;
+            int flag2 = 0;
+            int flag3 = 0;
+            int flag = 0;
+            if(i==a)
+                flag1 = 1;
+            if(i==b)
+                flag2 = 1;
+            if(i==c)
+                flag3 = 1;
+            int t = 2;
+            while(!flag){
+                if(((flag1==0)&&((t*a)%n==a))||((flag2==0)&&((t*b)%n==b))||((flag3==0)&&((t*c)%n==c))){
+                    break;
+                }
+                else{
+                    printf("i=%d t=%d flag1=%d %d flag2=%d %d flag3=%d %d\n",i,t,flag1,(t*a)%n,flag2,(t*b)%n,flag3,(t*c)%n);
+                    if(i==(t*a)%n)
+                        flag1 = 1;
+                    if(i==(t*b)%n)
+                        flag2 = 1;
+                    if(i==(t*c)%n)
+                        flag3 = 1;
+                }
+                flag = flag1&&flag2&&flag3;
+                t++;
+            }
+
+            if (flag)
+                sum++;
+        }
+        printf("%d\n", sum);
+    }
+    return 0;
+}

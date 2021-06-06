@@ -1,0 +1,29 @@
+#include <stdio.h>
+int tmp[400000] = {0};
+int restore[200005] = {0};
+int main(void){
+	int n,m;
+	scanf("%d%d", &n, &m);
+	for (int i=1;i<=n;i++)
+        restore[i] = -1;
+	for (int i=m-1;i>=0;i--){
+    	scanf("%d", &tmp[i]);
+    	if (restore[tmp[i]] == -1)
+            restore[tmp[i]] = i;
+        else{
+            tmp[restore[tmp[i]]] = 0;
+            restore[tmp[i]] = i;
+		}
+	}
+	for (int i=1;i<=n;i++){
+        if (restore[i] == -1){
+            tmp[m] = i;
+            m++;
+        }
+	}
+    for(int i=0;i<m;i++){
+        if(tmp[i]!=0)
+            printf("%d\n", tmp[i]);
+    }
+	return 0;
+}

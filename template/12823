@@ -1,0 +1,55 @@
+#include <iostream>
+#include <vector>
+#include <utility>
+using namespace std;
+int n, k, r;
+int group, s_group;
+int now_group = 0;
+bool visited[1005];
+vector<pair<int , int> > arr;
+
+void dfs(int x){
+    if(visited[x])
+        return;
+    now_group++;
+    visited[x] = true;
+    //cout << '{' << x << " " << now_group << '}' << '\n';
+    for(int i=0;i<n;i++){
+        if(i!=x && !visited[i]){
+            int dis = (arr[x].first - arr[i].first) * (arr[x].first - arr[i].first) + (arr[x].second - arr[i].second) * (arr[x].second - arr[i].second);
+            //cout << dis << " " << x << " " << i << '\n';
+            if(dis <= r*r)
+                dfs(i);
+        }
+    }
+    return;
+}
+
+int main(){
+    int t;
+    cin >> t;
+    while(t--){
+        group = 0;
+        s_group = 0;
+        arr.clear();
+        cin >> n >> r >> k;
+        for(int i=0;i<n;i++){
+            visited[i] = false;
+            pair<int, int> now;
+            cin >> now.first >> now.second;
+            arr.push_back(now);
+            //cout << arr[i].first << " " << arr[i].second << '\n';
+        }
+        for(int i=0;i<n;i++) {
+            if(!visited[i]) {
+                //cout << i << '\n';
+                group++;
+                dfs(i);
+                if(now_group < k)
+                    s_group++;
+                now_group = 0;
+            }
+        }
+        cout << s_group << " " << group - s_group << '\n';
+    }
+}

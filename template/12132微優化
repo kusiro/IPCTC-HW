@@ -1,0 +1,25 @@
+#include <stdio.h>
+int tmp[300000];
+int main(){
+  int x;
+  scanf("%d",&x);
+  int k;
+  for(int i=0;i<x;i++){
+    scanf("%d",&k);
+    tmp[k] = i+1;
+  }
+  int now = 0;
+  for(int i=0;i<x;i++){
+    scanf("%d",&k);
+    if(tmp[k] > now){
+      printf("%d",tmp[k]-now);
+      now = tmp[k];
+    }
+    else
+      printf("0");
+    if (i!= x-1)
+      printf(" ");
+  }
+  printf("\n");
+  return 0;
+}

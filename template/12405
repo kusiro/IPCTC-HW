@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int in[101];
+int post[101];
+int n;
+typedef struct Node{
+    int num;
+    struct Node* right_child;
+    struct Node* left_child;
+}TreeNode;
+
+
+TreeNode* create(int i){
+    TreeNode* root = (TreeNode*)malloc(sizeof(TreeNode));
+    root->num = i;
+    root->right_child = NULL;
+    root->left_child = NULL;
+    return root;
+}
+
+
+TreeNode* buildTree(int in_start, int in_end, int post_now){
+
+    if(in_start > in_end)
+        return NULL;
+    TreeNode* now = create(post[post_now]);
+    if(in_start == in_end)
+        return now;
+    int i;
+    for(i=in_start;i<=in_end;i++){
+        if(in[i] == post[post_now])
+            break;
+    }
+    now->left_child = buildTree(in_start, i-1, post_now - (in_end-i+1));
+    now->right_child = buildTree(i+1, in_end, post_now-1);
+    return now;
+}
+
+
+void preorder(TreeNode* root){
+    if(root) {
+        printf("%d ", root->num);
+        preorder(root->left_child);
+        preorder(root->right_child);
+    }
+}
+
+void freeTree(TreeNode* root){
+    if(root) {
+        freeTree(root->left_child);
+        freeTree(root->right_child);
+        free(root);
+    }
+}
+
+int main(){
+    int test = 1;
+    while(scanf("%d", &n) != EOF){
+        int t = n;
+        for(int i=0;i<t;i++)
+            scanf("%d", &in[i]);
+        for(int i=0;i<t;i++)
+            scanf("%d", &post[i]);
+        TreeNode* root = buildTree(0, n-1, n-1);
+        printf("testcase%d: ", test);
+        preorder(root);
+        printf("\n");
+        freeTree(root);
+        test++;
+    }
+}

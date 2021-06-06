@@ -1,0 +1,51 @@
+#include <iostream>
+#include <utility>
+#include <vector>
+using namespace std;
+
+vector<pair<int,int> > pt;
+int n, r;
+bool visited[1001];
+int group;
+int solo;
+void dfs(int now){
+    //printf("{%d,%d}\n", pt[now].first, pt[now].second);
+    bool flag = true;
+    if(visited[now])
+        return;
+    visited[now] = true;
+    for(int i=0;i<n;i++){
+        if(i != now) {
+            int distance = (pt[now].second - pt[i].second) * (pt[now].second - pt[i].second) +
+                           (pt[now].first - pt[i].first) * (pt[now].first - pt[i].first);
+            if(distance <= r*r){
+                flag = false;
+                if(!visited[i])
+                    dfs(i);
+            }
+        }
+    }
+    if(flag)
+        solo++;
+};
+
+int main(){
+    cin >> n >> r;
+    for(int i=0;i<n; i++) {
+        pair<int, int> now;
+        cin >> now.first >> now.second;
+        pt.push_back(now);
+    }
+    /*
+    for(int i=0;i<n;i++){
+        printf("%d:{%d,%d}\n", i, pt[i].first, pt[i].second);
+    }
+    */
+    for(int i=0;i<n;i++) {
+        if(visited[i] == 0) {
+            group++;
+            dfs(i);
+        }
+    }
+    cout << solo << " " << group - solo << '\n';
+}

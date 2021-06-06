@@ -1,0 +1,31 @@
+#include <stdio.h>
+long long int arr[2000002];
+int t, q;
+
+int search(long long int now,int l,int r){
+    if(l>r)
+        return -1;
+    int mid = (l+r)/2;
+    if(now == arr[mid])
+        return mid;
+    if(now < arr[mid])
+        return search(now,l,mid-1);
+    return search(now,mid+1,r);
+}
+
+int main(){
+    while(scanf("%d%d", &t, &q) != EOF){
+        for(int i=0;i<t;i++)
+            scanf("%lld", &arr[i]);
+        for(int i=0;i<q;i++){
+            long long int now;
+            scanf("%lld", &now);
+            int ans = search(now,0,t-1)+1;
+            if(ans == 0)
+                printf("Break your bridge!\n");
+            else {
+                printf("%d\n", ans);
+            }
+        }
+    }
+}

@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <string.h>
+char S[1005];
+char p[1005];
+
+int prefix[1005];
+int main(){
+    while(scanf("%s", S) != EOF) {
+        scanf("%s", p);
+        int s_len = strlen(S);
+        int p_len = strlen(p);
+        prefix[0] = 0;
+        for (int i = 1; i <= s_len; i++) {
+            for (int j = 0; j < p_len; j++) {
+                if (S[i + j - 1] != p[j]) {
+                    prefix[i] = prefix[i-1];
+                    break;
+                }
+                if (j == p_len - 1)
+                    prefix[i] = prefix[i-1] + 1;
+            }
+        }
+        int q;
+        scanf("%d", &q);
+        int sum = 0;
+        while (q--) {
+            int head, tail;
+            scanf("%d%d", &head, &tail);
+            int now;
+            if(tail - p_len + 1 < 0)
+                now = 0;
+            else
+                now = prefix[tail - p_len + 1] - prefix[head - 1];
+            if (now > sum)
+                sum = now;
+        }
+        printf("%d\n", sum);
+    }
+}

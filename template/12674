@@ -1,0 +1,26 @@
+#include <stdio.h>
+void sort(int* a,int* b){
+    if (*a < *b){
+        int k = *a;
+        *a = *b;
+        *b = k;
+    }
+}
+int main(){
+    int t;
+    scanf("%d", &t);
+    while(t--){
+        int a,b,c;
+        scanf("%d%d%d", &a, &b, &c);
+        sort(&b,&c);
+        sort(&a,&b);
+        sort(&b,&c);
+        if (b+c < a){
+            printf("%d\n",(b+c));
+        }
+        else{
+            c -= (a-b);
+            printf("%d\n",a+(c/2));
+        }
+    }
+}

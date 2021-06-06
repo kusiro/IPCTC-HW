@@ -1,0 +1,35 @@
+#include <iostream>
+using namespace std;
+long long int MAX = 1000000007;
+long long int ans;
+string s;
+int main(){
+    int t;
+    cin >> t;
+    while(t--){
+        long long int x;
+        cin >> x;
+        cin >> s;
+        ans = s.length();
+        //cout << length << '\n';
+        int now = 0;
+        while(s.length() < x){
+            int times = int(s[now]) - 48;
+            int s_len = s.length() - (now + 1);
+            for(int i=0;i<times-1;i++) {
+                s += s.substr(now + 1, s_len);
+                //cout << now << " " << s_len <<" " << s.substr(now + 1, s_len) << " " << s << '\n';
+            }
+            now++;
+        }
+        for(int i=0;i<x;i++){
+            ans += (ans-(i+1)) * (int(s[i])-49);
+            if(ans < 0)
+                ans += MAX;
+            ans %= MAX;
+        }
+        cout << ans << '\n';
+        //cout << x << " " << s << '\n';
+        //cout << length << '\n';
+    }
+}

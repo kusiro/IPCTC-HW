@@ -1,0 +1,12 @@
+
+#include<stdio.h>
+int main(){
+	int a,b,c,A,B,C,total;
+	scanf("%d%d%d", &A, &B, &C);
+	total = (A+B+C)/2;
+	a = total - B;
+	b = total - C;
+	c = total - A;
+	printf("%d %d %d\n", a, b, c);
+	return 0;
+}

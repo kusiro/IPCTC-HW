@@ -1,0 +1,76 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <map>
+using namespace std;
+map<long long int, long long int> mp[12];
+//vector< pair<int, int>> arr;
+int main(){
+    long long int n, div;
+    while(scanf("%lld%lld", &n, &div) != EOF){
+        long long int ans = 0;
+        for(int i=0;i<12;i++)
+            mp[i].clear();
+        for(int i=0;i<n;i++){
+            string now;
+            cin >> now;
+            int length = now.length();
+            long long int d;
+            d = atoll(now.c_str());
+            d%=div;
+            if(mp[length].find(d) == mp[length].end())
+                mp[length][d] = 1;
+            else
+                mp[length][d]++;
+            //cout << now;
+            //arr.push_back({d,length});
+        }
+        /*
+        for(int i=1;i<12;i++){
+            for(auto j:mp[i]) {
+                cout << '{' << i << ", " << j.first << ", " <<j.second << '}' << '\n';
+            }
+        }
+        */
+        for(int i=1;i<=11;i++){
+            for(auto j:mp[i]){
+                for(int k=1;k<=11;k++){
+                    long long int now = j.first;
+                    for(int s=0;s<k;s++) {
+                        now *= 10;
+                        now %= div;
+                    }
+                    now = div - now;
+                    if(now == div)
+                        now = 0;
+                    if(mp[k].find(now) != mp[k].end()) {
+                        ans += mp[k][now]*j.second;
+                        if(j.first == now && k == i) {
+                            ans -= j.second;
+                        }
+                    }
+                }
+            }
+        }
+        /*
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                //cout << now1 << " " << now2 << "\n";
+                long long int cmp1, cmp2;
+                cmp1 = pow(10,arr[i].second)*arr[j].first + arr[i].first;
+                cmp2 = pow(10,arr[j].second)*arr[i].first + arr[j].first;
+                //cout << cmp1 << " " << cmp2 << "\n";
+                if(cmp1 % k == 0)
+                    ans++;
+                if(cmp2 % k == 0)
+                    ans++;
+            }
+        }
+        */
+        cout << ans << '\n';
+    }
+
+}

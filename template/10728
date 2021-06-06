@@ -1,0 +1,9 @@
+#include <stdio.h>
+int main(void){
+	int N,X,Y,Z;
+	scanf("%d%d%d%d", &N, &X, &Y, &Z);
+	int ans1 = (X + Y)-(N - Z);
+	int ans2 = X - ans1;
+	printf("%d %d", ans1, ans2);
+	return 0;
+}

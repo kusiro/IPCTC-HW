@@ -1,0 +1,86 @@
+#include <stdlib.h>
+typedef struct _NODE {
+	int level;
+	struct _NODE *left_child, *right_child;
+} Node;
+
+void build_tree(Node **now, int *arr, int l, int r);
+int query_heatstroke(Node *now, int x);
+void eat_rat(Node **root, int x);
+
+void build_tree(Node **now,int *arr, int l,int r){
+    if(l > r)
+        return;
+    *now = (Node*)malloc(sizeof(Node));
+    int mid = (l+r)/2;
+    Node* root = *now;
+    root->level = arr[mid];
+    Node** right = &(root->right_child);
+    Node** left = &(root->left_child);
+    build_tree(left, arr, l, mid-1);
+    build_tree(right, arr, mid+1, r);
+}
+
+int query_heatstroke(Node *now, int x){
+    if(now==NULL)
+        return 0;
+    int val = now->level;
+    if(now->level == x)
+        return 1;
+    if(x>val)
+        return query_heatstroke(now->right_child, x);
+    return query_heatstroke(now->left_child, x);
+}
+
+void eat_rat(Node **root, int x){
+    Node* parent = NULL;
+    Node* now = *root;
+    int flag;
+    while(now->level != x){
+        parent = now;
+        if(now->level > x){
+            flag = 1;
+            now = now->left_child;
+        }
+        else{
+            flag = 2;
+            now = now->right_child;
+        }
+    }
+    if (now->left_child == NULL && now->right_child == NULL) {
+        if(now == *root)
+            *root = NULL;
+        else if(flag == 1)
+            parent->left_child = NULL;
+        else if(flag == 2)
+            parent->right_child = NULL;
+        free(now);
+        return;
+    }
+    if (now->right_child == NULL){
+        if(now == *root)
+            *root = now->left_child;
+        else if(flag == 1)
+            parent->left_child = now->left_child;
+        else if(flag == 2)
+            parent->right_child = now->left_child;
+        free(now);
+        return;
+    }
+    if (now->left_child == NULL){
+        if(now == *root)
+            *root = now->right_child;
+        else if(flag == 1)
+            parent->left_child = now->right_child;
+        else if(flag == 2)
+            parent->right_child = now->right_child;
+        free(now);
+        return;
+    }
+    Node* left = now->left_child;
+    while(left->right_child)
+        left = left->right_child;
+    int leftmax = left->level;
+    now->level = leftmax;
+    eat_rat(&(now->left_child), leftmax);
+}

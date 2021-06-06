@@ -1,0 +1,66 @@
+#include <iostream>
+#include <vector>
+#include <map>
+#include <set>
+#include <string>
+using namespace std;
+
+
+class people{
+  public:
+    people(int age, string name);
+    int age;
+    string name;
+    bool operator<(const people& b) const{
+        if(this->age != b.age)
+          return this->age < b.age;
+        return this->name < b.name;
+    }
+};
+
+people::people(int age, string name){
+  this->age = age;
+  this->name = name;
+}
+
+set <people> S;
+
+int main(){
+  int n;
+  cin >> n;
+  while(n--){
+    //cout << "hi";
+    string s;
+    cin >> s;
+    if(s == "born"){
+      string new_name;
+      int new_age;
+      cin >> new_name >> new_age;
+      people now(new_age, new_name);
+      S.insert(now);
+    }
+    if(s == "kill"){
+      string now_name;
+      int now_age;
+      cin >> now_name >> now_age;
+      people now(now_age, now_name);
+      if(S.find(now) != S.end())
+        S.erase(S.find(now));
+    }
+    if(s == "find"){
+      string now_name;
+      int now_age;
+      cin >> now_name >> now_age;
+      people now(now_age, now_name);
+      if(S.find(now) != S.end())
+        cout << "YES\n";
+      else
+        cout << "NO\n"; 
+    }
+    if(s == "young"){
+      if(S.begin() != S.end()){
+        cout << S.begin()->name << " " << S.begin()->age << '\n';
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+#include <iostream>
+#include <stdio.h>
+using namespace std;
+
+int X_plus_Y_number[100005];
+int main(){
+    int t;
+    scanf("%d", &t);
+    while(t--) {
+        int A, B, C, D;
+        long long int ans = 0;
+        for (int i = 0; i < 100004; i++) {
+            X_plus_Y_number[i] = 0;
+        }
+        scanf("%d%d%d%d", &A, &B, &C, &D);
+        for (int i = A; i <= B; i++) {
+            X_plus_Y_number[i + B]++;
+            X_plus_Y_number[i + C + 1]--;
+        }
+        for (int i = 1; i <= B+C; i++) {
+            X_plus_Y_number[i] += X_plus_Y_number[i - 1];
+            //printf("%d ", X_plus_Y_number[i]);
+        }
+        for (int i = C; i <= B+C; i++) {
+            ans += X_plus_Y_number[i] * (min(i-1, D) - C + 1);
+        }
+        printf("%lld\n", ans);
+    }
+
+}

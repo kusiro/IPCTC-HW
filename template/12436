@@ -1,0 +1,64 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+long long int a[100001];
+
+int cmp(const void* a, const void* b){
+    return *(int*)a - *(int*)b;
+}
+
+int bsl(int l,int r, long long int x){
+    //printf("l:(%d,%d,%d)\n", l, r, x);
+    if(l > r)
+        return -1;
+    if(a[l] == x)
+        return l;
+    int mid = (l+r)/2;
+    if(a[mid] >= x){
+        return bsl(l+1, mid, x);
+    }
+    return bsl(mid+1, r, x);
+}
+
+int bsr(int l, int r, long long int x){
+    //printf("r:(%d,%d,%d)\n", l, r, x);
+    if(l > r)
+        return -1;
+    if(a[r] == x)
+        return r;
+    int mid = (l+r)/2;
+    if(a[mid] <= x){
+        return bsr(mid, r-1, x);
+    }
+    return bsr(l, mid-1, x);
+}
+
+int main() {
+	int n;
+	scanf("%d", &n);
+	for(int i=0;i<n;i++){
+	    scanf("%lld", &a[i]);
+	}
+	qsort(a, n, sizeof(a[0]), cmp);
+    /*
+	for(int i=0;i<n;i++){
+        printf("%lld ", a[i]);
+    }
+    printf("\n");
+    */
+	int q;
+	scanf("%d", &q);
+	while(q--){
+	    long long int now;
+	    scanf("%lld", &now);
+	    int left = bsl(0, n-1, now);
+	    int right = bsr(0, n-1, now);
+	    //printf("(%d,%d)\n", left, right);
+	    if(left == -1 && right == -1){
+	        printf("%d\n", 0);
+	    }
+	    else {
+            printf("%d\n", right-left+1);
+        }
+	}
+}

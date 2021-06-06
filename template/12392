@@ -1,0 +1,126 @@
+#include <stdlib.h>
+
+
+typedef struct _NODE {
+	int level;
+	struct _NODE *left_child, *right_child;
+} Node;
+
+
+void build_tree(Node **now, int *arr, int l, int r);
+int query_heatstroke(Node *now, int x);
+void eat_rat(Node **root, int x);
+void buy_rat(Node **root, int x);
+
+void build_tree(Node **now, int *arr, int l, int r){
+    if(r < l) {
+        (*now) = NULL;
+        return;
+    }
+    *now = (Node*)malloc(sizeof(Node));
+    int mid = (l+r)/2;
+    (*now)->level = arr[mid];
+    Node** left = &((*now)->left_child);
+    Node** right = &((*now)->right_child);
+    build_tree(left, arr, l, mid-1);
+    build_tree(right, arr, mid+1, r);
+}
+
+int query_heatstroke(Node* now, int x){
+    //printf("{%d, %d}\n", now->level, x);
+    if(now == NULL)
+        return 0;
+    if(now->level == x)
+        return 1;
+    if(now->level > x)
+        return query_heatstroke(now->left_child, x);
+    return query_heatstroke(now->right_child, x);
+}
+
+void eat_rat(Node** root, int x){
+    Node* now_v = *root;
+    Node *parent = NULL;
+    while(now_v->level != x){
+        parent = now_v;
+        if(now_v->level > x){
+            now_v = now_v->left_child;
+        }
+        else if(now_v->level < x){
+            now_v = now_v->right_child;
+        }
+    }
+    Node** now = &now_v;
+    if((*now)->right_child == NULL && (*now)->left_child == NULL){
+        if(parent != NULL && parent->left_child == *now)
+            parent->left_child = NULL;
+        if(parent != NULL && parent->right_child == *now)
+            parent->right_child = NULL;
+        if(parent == NULL)
+            *root = NULL;
+        free(*now);
+        return;
+    }
+    if((*now)->left_child == NULL){
+        Node* right = (*now)->right_child;
+        (*now)->level = right->level;
+        (*now)->right_child = right->right_child;
+        (*now)->left_child = right->left_child;
+        free(right);
+        return;
+    }
+    if((*now)->right_child == NULL){
+        Node* left = (*now)->left_child;
+        (*now)->level = left->level;
+        (*now)->right_child = left->right_child;
+        (*now)->left_child = left->left_child;
+        free(left);
+        return;
+    }
+    Node ** left_max = &((*now)->left_child);
+    while((*left_max)->right_child != NULL){
+        left_max = &((*left_max)->right_child);
+    }
+    (*now)->level = (*left_max)->level;
+    int sub = (*left_max)->level;
+    eat_rat(left_max, sub);
+}
+void buy_rat(Node** root, int x){
+    Node* parent = NULL;
+    Node* now = *root;
+    int flag;
+    while(now != NULL){
+        if(now->level == x)
+            break;
+        parent = now;
+        if(now->level > x){
+            flag = 1;
+            now = now->left_child;
+        }
+        else if(now->level < x){
+            flag = 2;
+            now = now->right_child;
+        }
+    }
+    Node* insert = (Node*)malloc(sizeof(Node));
+    insert->level = x;
+    insert->left_child = NULL;
+    insert->right_child = NULL;
+    if(now == NULL && parent == NULL){
+        *root = insert;
+        return;
+    }
+    if(now == NULL && flag == 1){
+        parent->left_child = insert;
+        return;
+    }
+    if(now == NULL && flag == 2){
+        parent->right_child = insert;
+        return;
+    }
+    if(now != NULL){
+        Node* left = now->left_child;
+        now->left_child = insert;
+        insert->left_child = left;
+        return;
+    }
+}

@@ -1,0 +1,21 @@
+#include <stdio.h>
+int bin[200000];
+int main()
+{
+    int a,b;
+    scanf("%x",&a);
+    scanf("%x",&b);
+    int sum = a+b;
+    int i=0;
+    while(sum)
+    {
+        if(sum%2==0)
+            bin[i]=0;
+        else
+            bin[i]=1;
+        sum /= 2;
+        i++;
+    }
+    for(int j=i-1;j>=0;j--)
+        printf("%d",bin[j]);
+}

@@ -1,0 +1,21 @@
+#include <stdio.h>
+int main(){
+  char a,b,c,d;
+  char flag = '0';
+  scanf("%c%c%c%c", &a, &b, &c, &d);
+  int hour,min;
+
+  hour = 10 * ((int)a-48) + ((int)b-48);
+  min = 10 * ((int)c-48) + ((int)d-48);
+  if (hour >= 12){
+    hour -= 12;
+    flag = '1';
+  }
+  printf("%02d:%02d ", hour, min);
+  if (flag == '1')
+    printf("p.m.");
+  else
+    printf("a.m.");
+  
+  return 0;
+}

@@ -1,0 +1,109 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <utility>
+#include <set>
+#include <vector>
+#include <map>
+#include <string>
+#include <algorithm>
+using namespace std;
+long long int M[100005];
+vector<pair<long long int, int> > reference;
+vector<pair<long long int, int> > v;
+set<pair<long long int, int> > pre;
+long long int Max_speed = 0;
+long long int change_to_max;
+long long int final_min;
+int min_num = -1;
+int main(){
+    int n;
+    long long int x, A, B, m;
+    cin >> n >> x >> A >> B >> m;
+    for(int i=0;i<n;i++){
+        pair<long long int, int> now;
+        cin >> now.first;
+        M[i] = now.first;
+        now.second = i;
+        reference.push_back(now);
+        v.push_back(now);
+    }
+    sort(reference.begin(), reference.end());
+    sort(v.begin(), v.end());
+    for(int i=1;i<n;i++)
+        v[i].first += v[i-1].first; //prefix
+    for(int i=0;i<n;i++){
+        int count = i+1;
+        long long int full = count * reference[i].first;
+        long long int defect = full - v[i].first;
+        pre.insert({defect,i});
+    }
+    /*
+    for(int i=0;i<n;i++)
+        cout << reference[i].first << " ";
+    cout << '\n';
+    for(auto i:pre)
+        cout << i.first << " ";
+    cout << '\n';
+    */
+    long long int remaining = m;
+    //cout << remaining << '\n';
+    long long int lack = x * n - v[n-1].first;
+    //cout << lack << '\n';
+    if(lack <= remaining){
+        cout << A * n + B * x << '\n';
+        for(int i=0;i<n;i++) {
+            cout << x;
+            if(i != n-1)
+                cout << " ";
+            else
+                cout << '\n';
+        }
+    }
+    else{
+        int max_num = 0;
+        //cout << '1' << '\n';
+        for (int i = n; i >= 0; i--) {
+            if(i!=n) {
+                long long int gap = x - reference[i].first;
+                remaining -= gap;
+                //cout << gap << ' ';
+            }
+            if (remaining < 0)
+                break;
+            if(i!=n)
+                max_num++;
+            auto min_pt = pre.lower_bound({remaining,0});
+            if(min_pt->first != remaining)
+                min_pt--;
+            int min_idx = min_pt->second;
+            long long int now_min = reference[min_idx].first;
+            long long int still_remaining = remaining - min_pt->first;
+            now_min += still_remaining/(min_idx+1);
+            long long int now_s = B*now_min + A*max_num;
+            if(now_s > Max_speed) {
+                change_to_max = max_num;
+                Max_speed = now_s;
+                final_min = now_min;
+                min_num = min_idx;
+            }
+        }
+        //cout << '\n';
+        cout << Max_speed << '\n';
+        for(int i=0;i<n;i++){
+            if(i<=min_num)
+                reference[i].first = final_min;
+            if(i>=n-change_to_max)
+                reference[i].first = x;
+            M[reference[i].second] = reference[i].first;
+        }
+        for(int i=0;i<n;i++) {
+            cout << M[i];
+            if(i != n-1)
+                cout << " ";
+            else
+                cout << '\n';
+        }
+    }
+
+}

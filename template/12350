@@ -1,0 +1,65 @@
+#include <stdlib.h>
+#include "function.h"
+Node *head;
+Node *tail;
+void insert(Node** cursor, char cin){
+    Node* np = (Node*)malloc(sizeof(Node));
+    np->character = cin;
+    np->ptr_to_next_node = NULL;
+    np->ptr_to_prev_node = NULL;
+    Node* now = *cursor;
+    Node* tmp = now->ptr_to_next_node;
+
+    np->ptr_to_prev_node = now;
+    np->ptr_to_next_node = tmp;
+    now->ptr_to_next_node = np;
+    if(tmp == head)
+        tail = np;
+    tmp->ptr_to_prev_node = np;
+}
+
+void deletion(Node** cursor){
+    Node* now = *cursor;
+    if(now == tail)
+        return;
+    Node* tmp = now->ptr_to_next_node;
+    Node* next = tmp->ptr_to_next_node;
+    now->ptr_to_next_node = next;
+    if(next == head)
+        tail = now;
+    next->ptr_to_prev_node = now;
+    free(tmp);
+}
+
+void backspace(Node** cursor){
+    Node* now = *cursor;
+    if(now == head)
+        return;
+
+    Node* pre = now->ptr_to_prev_node;
+    Node* next = now->ptr_to_next_node;
+    pre->ptr_to_next_node = next;
+    if(next == head)
+        tail = pre;
+    next->ptr_to_prev_node = pre;
+    free(now);
+    (*cursor) = pre;
+}
+
+void go_left(Node** cursor, int n){
+    while(n--)
+        (*cursor) = (*cursor)->ptr_to_prev_node;
+}
+
+void go_right(Node** cursor, int n){
+    while(n--)
+        *cursor = (*cursor)->ptr_to_next_node;
+}
+
+void go_home(Node** cursor){
+    *cursor = head;
+}
+
+void go_end(Node** cursor){
+    *cursor = tail;
+}

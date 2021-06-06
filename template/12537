@@ -1,0 +1,52 @@
+#include <iostream>
+#include <vector>
+#include <set>
+#include <utility>
+using namespace std;
+vector <int> ans;
+set <pair <int, int> > s;
+int main(){
+    int t;
+    cin >> t;
+    while(t--){
+        string str;
+        cin >> str;
+
+        if(str == "push_back"){
+            int now;
+            cin >> now;
+            ans.push_back(now);
+            s.insert({now, ans.size()});
+        }
+
+        if(str == "pop_back" && !ans.empty()) {
+            s.erase({ans[ans.size()-1], ans.size()});
+            ans.pop_back();
+        }
+
+        if(str == "max" && !ans.empty()){
+            pair<int ,int> max = *(s.rbegin());
+            cout << max.first << ' ' << max.second << '\n';
+        }
+
+        if(str == "min" && !ans.empty()){
+            pair<int, int> min = *(s.begin());
+            cout << min.first << ' ' << min.second << '\n';
+        }
+
+        if(str == "find"){
+            int m;
+            cin >> m;
+            if(m<=ans.size()){
+                m--;
+                cout << ans[m] << '\n';
+            }
+        }
+        /*
+        for(auto i:s){
+            cout << '{' << i.first << " " << i.second << '}' << ' ';
+        }
+        cout << '\n';
+        */
+    }
+}
