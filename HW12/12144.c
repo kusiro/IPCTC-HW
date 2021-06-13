@@ -30,6 +30,7 @@ int encounter(Obj hero, monster mon)
 }
 int battle(Obj *hero, Obj *m)
 {
+  printf("%d\n", (*m).HP);
   int round = (*m).HP / (*hero).ATK;
   if ((*m).HP % (*hero).ATK == 0)
     round--;
@@ -83,4 +84,7 @@ int main()
     printf("HEIR OF FIRE DESTROYED\n");
   else
     printf("YOU DIED\n");
+
+  for (int i = 0; i < n; i++)
+    printf("%d %d %d %d\n", mon.m[i].HP, mon.m[i].ATK, mon.m[i].x, mon.m[i].y);
 }
