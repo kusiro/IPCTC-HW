@@ -17,41 +17,35 @@ int main(){
         {
           if (i + j > c)
           {
-            if(c * 1.5 > i + j)
-              count = i + j - c + count;
+            if (i + j < c * 1.5)
+              count += i + j - c;
             else {
-              for(int now = c + 1; now < i + j; now++){
-                if(now * 1.5 > (i + j)){
-                  count += i + j - now;
-                  break;
-                }
-              }
+              int addition = (int)(((i + j) - (c * 1.5)) / 1.5) + 1;
+              count += i + j - (c + addition);
             }
           }
         }
         else if (i + j > d)
         {
-          if(c * 1.5 > (i + j))
-            count += (d - c + 1);
-          else {
-            for(int now = c + 1; now <= d; now++){
-              if(now * 1.5 > (i + j)){
-                count += d - now + 1;
-                break;
-              }
+          if(i + j < d * 1.5){
+            if(i + j < c * 1.5)
+              count += d - c + 1;
+            else {
+              int addition = (int)(d * 1.5 - (i + j)) / 1.5;
+              count += addition + 1;
             }
           }
         }
         else
         {
-          if(c * 1.5 > (i + j))
-            count += (d - c);
-          else {
-            for(int now = c + 1; now <= d; now++){
-              if(now * 1.5 > (i + j)){
-                count += d - now;
-                break;
-              }
+          if (i + j < d * 1.5)
+          {
+            if (i + j < c * 1.5)
+              count += d - c;
+            else
+            {
+              int addition = (int)(d * 1.5 - (i + j)) / 1.5;
+              count += addition;
             }
           }
         }
