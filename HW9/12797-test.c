@@ -14,7 +14,7 @@ int main(void)
     int A, B, C, D;
     scanf("%d %d %d %d", &A, &B, &C, &D);
 
-    for(int i = 0; i < 200004; i++){
+    for(int i = 0; i < 200004; i++){ // 初始化陣列
       num[i] = 0;
       p[i] = 0;
       prefix[i] = 0;
@@ -22,7 +22,7 @@ int main(void)
 
     int x, z, i;
     
-    for (x = A; x <= B; x++)
+    for (x = A; x <= B; x++) // 紀錄 x + y = i 的次數
     {
       num[x + B]++;
       num[x + C + 1]--;
@@ -36,9 +36,12 @@ int main(void)
     {
       prefix[i] = prefix[i - 1] + p[i];
     }
+
     long long ans = 0;
+
     for (z = C; z <= D; z++)
     {
+      // z * 1.5 為整數時需要 -1
       if ((int)(z * 1.5) == z * 1.5)
         ans += (prefix[(int)(z * 1.5) - 1] - prefix[z]);
       else

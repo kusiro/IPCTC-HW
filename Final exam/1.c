@@ -1,13 +1,15 @@
-#include <iostream>
-#include <vector>
-#include <utility>
+#include <stdio.h>
+#include <stdlib.h>
 
-using namespace std;
+
+typedef struct {
+    int L, R;
+}range;
 
 int a[5005];
-int test[5005];
-int solo_guard[5005];
-vector<pair<int, int>> guard;
+int check[5005];
+int solo[5005];
+range guard[5005];
 
 int main()
 {
@@ -15,56 +17,60 @@ int main()
     scanf("%d", &t);
     while (t--)
     {
-        guard.clear();
-        for (int i = 0; i < 5005; i++)
+        for (int i = 0; i < 5005; i++){
             a[i] = 0;
+            guard[i].L = 0;
+            guard[i].R = 0;
+        }
+            
         int n, q;
-        scanf("%d%d", &n, &q);
+        scanf("%d %d", &n, &q);
         int ans = 0;
         for (int i = 0; i < q; i++)
         {
-            pair<int, int> now;
-            scanf("%d%d", &now.first, &now.second);
-            guard.push_back(now);
-            for (int j = now.first; j <= now.second; j++)
+            range now;
+            scanf("%d%d", &now.L, &now.R);
+            guard[i].L = now.L;
+            guard[i].R = now.R;
+            for (int j = now.L; j <= now.R; j++)
                 a[j]++;
         }
-        int total_guard = 0;
+        int totalGuard = 0;
         for (int i = 0; i <= n; i++)
         {
             if (a[i] != 0)
-                total_guard++;
+                totalGuard++;
         }
         for (int i = 0; i < q; i++)
         {
-            int now_guard = total_guard;
+            int nowGuard = totalGuard;
             for (int j = 0; j <= n; j++)
-                test[j] = a[j];
-            int l = guard[i].first;
-            int r = guard[i].second;
+                check[j] = a[j];
+            int l = guard[i].L;
+            int r = guard[i].R;
             for (int j = l; j <= r; j++)
             {
-                test[j]--;
-                if (test[j] == 0)
-                    now_guard--;
+                check[j]--;
+                if (check[j] == 0)
+                    nowGuard--;
             }
             for (int j = 1; j <= n; j++)
             {
-                if (test[j] == 1)
-                    solo_guard[j] = solo_guard[j - 1] + 1;
+                if (check[j] == 1)
+                    solo[j] = solo[j - 1] + 1;
                 else
-                    solo_guard[j] = solo_guard[j - 1];
+                    solo[j] = solo[j - 1];
             }
             for (int j = 0; j < q; j++)
             {
                 if (j != i)
                 {
-                    int now_l = guard[j].first;
-                    int now_r = guard[j].second;
-                    int real_now_guard = now_guard;
-                    real_now_guard -= solo_guard[now_r] - solo_guard[now_l - 1];
-                    if (real_now_guard > ans)
-                        ans = real_now_guard;
+                    int now_l = guard[j].L;
+                    int now_r = guard[j].R;
+                    int realGuard = nowGuard;
+                    realGuard -= solo[now_r] - solo[now_l - 1];
+                    if (realGuard > ans)
+                        ans = realGuard;
                 }
             }
         }

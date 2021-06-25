@@ -3,10 +3,10 @@
 long long int a[200005];
 int n, m;
 
-long long int C(int x){
+long long int Count(int x){
   long long int ans = 0;
   int round = 0;
-  for(int i=0;i<n;i++){
+  for(int i = 0; i < n;i++){
     if(a[i] - round <= 0)
       break;
     if(i % x == x - 1) {
@@ -20,9 +20,9 @@ long long int C(int x){
 }
 
 int compare(const void *a, const void *b){
-   int c = *(int *)a;
-   int d = *(int *)b;
-   return d - c;
+  int c = *(int *)a;
+  int d = *(int *)b;
+  return d - c;
 }
 
 int main(){
@@ -39,7 +39,7 @@ int main(){
     int L = 1;
     while(R > L){
       int mid = (L + R) / 2;
-      if(C(mid) > m) {
+      if(Count(mid) > m) {
         R = mid;
         day = mid;
       }

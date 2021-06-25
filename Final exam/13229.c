@@ -19,7 +19,7 @@ int pop() {
 
 int main() {
 
-    int n, k, v, next_v, cnt;
+    int n, k, v, next_v, count;
     while(scanf("%d %d", &n, &k) != EOF) {
         for(int i = 0; i < n; i++) {
             scanf("%d", &a[i]);
@@ -54,18 +54,17 @@ int main() {
         }
 
         // Count answer
-        cnt = 0;
+        count = 0;
         for(int i = 0; i < k; i++) {
-            cnt += ok[i];
+            count += ok[i];
         }
         
-        printf("%d\n", cnt);
+        printf("%d\n", count);
         for(int i=  0; i < k; i++) {
             if( ok[i] == 1 ) {
-                (i == k - 1) ? printf("%d", i) : printf("%d ", i);
+                (i == k - 1) ? printf("%d\n", i) : printf("%d ", i);
             }
         }
-        printf("\n");
     }
     return 0;
 }
